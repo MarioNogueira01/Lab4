@@ -38,12 +38,14 @@ public class Console {
     	int position;
     	
         if (board.getTurn() == Ilayout.ID.X) {
-        	position=getHumanMove();
+        	//position=getHumanMove();
+            position = MCTSPlayer.play(board);
         	//position = XAgent.play(board);
         	board.move(position);
- 
         } else {
-        	position = XAgent.play(board);
+            position=getHumanMove();
+        	//position = XAgent.play(board);
+            //position = MCTSPlayer.play(board);
         	board.move(position);
         }
     }

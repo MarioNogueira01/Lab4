@@ -1,6 +1,9 @@
 import java.util.*;
 interface Ilayout {
     int N=4,M=4,K=4;
+
+    boolean isEmptyBoard();
+
     enum ID{Blank, X, O}
 
 
@@ -41,6 +44,12 @@ interface Ilayout {
      * @return the children of the receiver.
     */
     public List<Ilayout> children ();
+
+    public Object clone ();
+
+    public int getMove();
+
+    public ID[][] getBoard();
 
 
 

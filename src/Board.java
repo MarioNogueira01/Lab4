@@ -13,6 +13,8 @@ public class Board implements Ilayout,Cloneable{
     private int moveCount;
     private boolean gameOver;
 
+    private int move;
+
 
     Board() {
         board = new ID[N][M];
@@ -53,7 +55,11 @@ public class Board implements Ilayout,Cloneable{
      * @return          true if the move has not already been played
      */
     public boolean move (int index) {
-        return move(index% M, index/M);
+        return move(index % M, index / M);
+    }
+
+    public int getMove(){
+        return this.move;
     }
 
     /**
@@ -77,19 +83,48 @@ public class Board implements Ilayout,Cloneable{
         moveCount++;
         movesAvailable.remove(y * N + x);
 
+       // Verificar se há um vencedor após o movimento
+       if (checkWinner(x, y)) {
+           winner = playersTurn;
+           gameOver = true;
+       }
+
         // The game is a draw.
         if (moveCount == N * M) {
             winner = ID.Blank;
             gameOver = true;
         }
 
-        // Check for a winner.
-
-        /** YOUR CODE HERE */
+        // Check for a winner
 
 
         playersTurn = (playersTurn == ID.X) ? ID.O : ID.X;
         return true;
+    }
+
+    //TODO mudar este função para ser para uma matriz diferente porque isto ta a ver 4x4 ver o que esta a falhar nas linhas
+    private boolean checkWinner(int x, int y) {
+        // Verificar linha
+        if (board[y][0] == playersTurn && board[y][1] == playersTurn && board[y][2] == playersTurn && board[y][3] == playersTurn) {
+            return true;
+        }
+
+        // Verificar coluna
+        if (board[0][x] == playersTurn && board[1][x] == playersTurn && board[2][x] == playersTurn && board[3][x] == playersTurn) {
+            return true;
+        }
+
+        // Verificar diagonal principal
+        if (x == y && board[0][0] == playersTurn && board[1][1] == playersTurn && board[2][2] == playersTurn && board[3][3] == playersTurn) {
+            return true;
+        }
+
+        // Verificar diagonal secundária
+        if (x + y == 3 && board[0][3] == playersTurn && board[1][2] == playersTurn && board[2][1] == playersTurn && board[3][0] == playersTurn) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -155,6 +190,28 @@ public class Board implements Ilayout,Cloneable{
     	}
     }
 
+    public Object cloneRotated () {
+        try {
+            Board b = (Board) super.clone();
+
+            b.board = new ID[M][N];
+            for (int i=0; i<N; i++)
+                for (int j=0; j<M; j++)
+                    b.board[j][N - 1 - i] = this.board[i][j];
+
+            b.playersTurn       = this.playersTurn;
+            b.winner            = this.winner;
+            b.movesAvailable    = new HashSet<Integer>();
+            b.movesAvailable.addAll(this.movesAvailable);
+            b.moveCount         = this.moveCount;
+            b.gameOver          = this.gameOver;
+            return b;
+        }
+        catch (Exception e) {
+            throw new InternalError();
+        }
+    }
+
     @Override
     public String toString () {
         StringBuilder sb = new StringBuilder();
@@ -180,12 +237,44 @@ public class Board implements Ilayout,Cloneable{
          * @return the children of the receiver.
      */
      public List<Ilayout> children() {
+         List<Ilayout> children = new ArrayList<>();
+         for (int index : movesAvailable) {
 
-        // YOUR CODE HERE
+             Board newBoard = (Board) this.clone();
+
+             newBoard.move = index;
+             newBoard.move(index);
+             if (checkRotation(children,newBoard)) {
+                 children.add(newBoard);
+             }
+         }
+         return children;
      }
 
+    private boolean checkRotation(List<Ilayout> children, Board newBoard) {
+         Board rotated =(Board) newBoard.cloneRotated();
+        //Verificar se existe a board igual com rotação de 90 graus
+         if (children.contains(rotated)){
+             return false;
+         }else {
+             rotated = (Board) rotated.cloneRotated();
+         }
+        //Verificar se existe a board igual com rotação de 180 graus
+        if (children.contains(rotated)){
+            return false;
+        }else {
+            rotated = (Board) rotated.cloneRotated();
+        }
+        //Verificar se existe a board igual com rotação de 270 graus
+        if (children.contains(rotated)){
+            return false;
+        }else {
+            return true;
+        }
+    }
 
-	@Override
+
+    @Override
 	public boolean equals(Object other) {
 		if (other == this) return true;
 		if (other == null) return false;
@@ -208,4 +297,19 @@ public class Board implements Ilayout,Cloneable{
 		int y=index%M;
         return (board[x][y] == ID.Blank);
 	}
+
+    public ID[][] getBoard(){
+         return this.board;
+    }
+
+    public boolean isEmptyBoard(){
+         int possibleMoves = N * M;
+        System.out.println(possibleMoves);
+         int avaibleMoves = this.movesAvailable.size();
+        System.out.println(avaibleMoves);
+         if (avaibleMoves == possibleMoves){
+             return true;
+         }
+         return false;
+    }
 }
