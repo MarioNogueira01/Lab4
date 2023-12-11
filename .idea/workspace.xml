@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ea6e13fe-5e5b-4393-8ec2-9c418c8e3185" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MCTSPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MCTSPlayer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,19 +32,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/mnogu/OneDrive/Ambiente de Trabalho/Uni/3 ano/1 semestre/IA/LAb4&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "TODO_SCOPE": "All Places",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/mnogu/OneDrive/Ambiente de Trabalho/Uni/3 ano/1 semestre/IA/LAb4",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -61,7 +61,8 @@
       <workItem from="1701345324637" duration="13122000" />
       <workItem from="1701364881269" duration="556000" />
       <workItem from="1701889805846" duration="2633000" />
-      <workItem from="1701973096515" duration="2983000" />
+      <workItem from="1701973096515" duration="3577000" />
+      <workItem from="1702248945477" duration="6618000" />
     </task>
     <servers />
   </component>
@@ -101,14 +102,14 @@
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="90">
-        <watch expression="selectedNode.Childrens" language="JAVA" />
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="92">
+        <watch expression="root.Childrens" language="JAVA" />
       </inline-watch>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="168">
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="202">
         <watch expression="father.Childrens" language="JAVA" />
       </inline-watch>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="90">
-        <watch expression="root.Childrens" language="JAVA" />
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="92">
+        <watch expression="selectedNode.Childrens" language="JAVA" />
       </inline-watch>
     </watches-manager>
   </component>

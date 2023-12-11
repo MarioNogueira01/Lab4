@@ -8,7 +8,7 @@
 import java.util.*;
 
 public class MCTSPlayer {
-    private static final int SIMULATION_COUNT = 10000;// Número de simulações por iteração MCTS
+    private static final int SIMULATION_COUNT = 1000000;// Número de simulações por iteração MCTS
 
     public static class State implements Cloneable {
         private Ilayout layout;
@@ -18,8 +18,10 @@ public class MCTSPlayer {
 
         private double wining;
 
+        private double[] winningResults;
         private int visit;
         private int simulations;
+
 
         protected PriorityQueue<State> Childrens = null;
 
@@ -98,7 +100,6 @@ public class MCTSPlayer {
                     selectedNode.Childrens.add(nn);
 
                     double simulationResult = simulation(nn);
-                    //nn.formulaResult = simulationResult;
 
                     backpropagation(nn, simulationResult);
                 }
@@ -120,49 +121,82 @@ public class MCTSPlayer {
 
     //TODO: verificar a criação das priorityQueues
     private static void criationQueue(State selectedNode) {
-        System.out.println(selectedNode);
+
         if (selectedNode.father != null){
             if(selectedNode.father.minMax == -1){ //se o pai for max cria no children uma priority queue ordenada pelo min
                 selectedNode.Childrens = new PriorityQueue<>(10,
                         (s1, s2) -> (int) Math.signum(s1.getFormulaResult() - s2.getFormulaResult()));
-                System.out.println("MAX" + "\n");
             }else{ //se o pai for min cria no children uma priority queue ordenada pelo max
                 selectedNode.Childrens = new PriorityQueue<>(10,
                         (s1, s2) -> (int) Math.signum(s2.getFormulaResult() - s1.getFormulaResult()));
-                System.out.println("MIN" + "\n");
             }
         }else {
             if(selectedNode.layout.isEmptyBoard()){
                 selectedNode.Childrens = new PriorityQueue<>(10,
                         (s1, s2) -> (int) Math.signum(s1.getFormulaResult() - s2.getFormulaResult()));
-                System.out.println("max" + "\n");
             }else{
                 selectedNode.Childrens = new PriorityQueue<>(10,
                         (s1, s2) -> (int) Math.signum(s2.getFormulaResult() - s1.getFormulaResult()));
-                System.out.println("min" + "\n");
             }
         }
     }
 
     private static void modify(State toModify, double winning) {
         toModify.visit += 1;
-        toModify.wining += winning;
         toModify.simulations += 1;
+        toModify.winningResults = adicionarElemento(toModify.winningResults, winning);
+        toModify.wining = calcularMedia(toModify.winningResults);
         toModify.formulaResult = countResult(toModify);
     }
 
-    private static double countResult(State n) {
-        if (n.visit == 0) {
-            return 0; // Evitar divisão por zero
+    private static void printing(double[] array){
+        for(int i = 0; i < array.length ; i++){
+            System.out.print(array[i] + ",");
         }
-        return (n.wining / n.visit) + 1.44 * Math.sqrt(Math.log(n.simulations) / n.visit);
+        System.out.print("\n");
+    }
+    private static double[] adicionarElemento(double[] arrayOriginal, double elemento) {
+        double[] result;
+        if (arrayOriginal != null){
+            int tamanhoOriginal = arrayOriginal.length;
+            result = new double[tamanhoOriginal + 1];
+
+            for (int i = 0; i < tamanhoOriginal; i++) {
+                result[i] = arrayOriginal[i];
+            }
+            result[tamanhoOriginal] = elemento;
+        }else{
+            result = new double[1];
+            result[0] = elemento;
+        }
+        return result;
+    }
+
+    private static double calcularMedia(double[] array) {
+        double soma = 0;
+
+        for (double elemento : array) {
+            soma += elemento;
+        }
+
+        if (array.length > 0) {
+            return soma / array.length;
+        } else {
+            return 0.0;
+        }
+    }
+
+    private static double countResult(State n) {
+        double result = 0;
+        if (n.visit != 0 && n.father != null) {
+            result = (n.wining / n.visit) + 1.44 * Math.sqrt(Math.log(n.father.simulations) / n.visit);
+        }
+        return result;
     }
 
 
     private static void modifyQueue(State father, State newNow) {
         PriorityQueue<State> temp = new PriorityQueue<>(father.Childrens);
-
-
         for (int i = 0; i < temp.size();i++){
             State tent = temp.poll();
             if (tent.layout.equals(newNow.layout)){
