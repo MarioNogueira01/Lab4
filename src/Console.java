@@ -43,8 +43,8 @@ public class Console {
         	//position = XAgent.play(board);
         	board.move(position);
         } else {
-            position=getHumanMove();
-        	//position = XAgent.play(board);
+            //position=getHumanMove();
+        	position = XAgent.play(board);
             //position = MCTSPlayer.play(board);
         	board.move(position);
         }
@@ -93,9 +93,9 @@ public class Console {
     public static void main(String[] args)  {
     	    final int repetitions=3;
     	    long times = 0;
+            long startTime = System.currentTimeMillis();
     	    for(int i=0; i<repetitions; i++) {
     	    	Console game = new Console();
-	    	    long startTime = System.currentTimeMillis();
 	    	    game.play();      	
 	    	    long totalTime = System.currentTimeMillis() - startTime;
 	    	    times += totalTime;

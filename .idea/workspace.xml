@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea6e13fe-5e5b-4393-8ec2-9c418c8e3185" name="Changes" comment="">
+    <list default="true" id="ea6e13fe-5e5b-4393-8ec2-9c418c8e3185" name="Changes" comment="tentativa">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Console.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Console.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MCTSPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MCTSPlayer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,6 +25,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -32,20 +36,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "TODO_SCOPE": "All Places",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/mnogu/OneDrive/Ambiente de Trabalho/Uni/3 ano/1 semestre/IA/LAb4",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/mnogu/OneDrive/Ambiente de Trabalho/Uni/3 ano/1 semestre/IA/LAb4&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -62,53 +66,46 @@
       <workItem from="1701364881269" duration="556000" />
       <workItem from="1701889805846" duration="2633000" />
       <workItem from="1701973096515" duration="3577000" />
-      <workItem from="1702248945477" duration="6618000" />
+      <workItem from="1702248945477" duration="31083000" />
+      <workItem from="1702479502530" duration="2102000" />
     </task>
+    <task id="LOCAL-00001" summary="tentativa">
+      <created>1702255649486</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1702255649486</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="tentativa" />
+    <option name="LAST_COMMIT_MESSAGE" value="tentativa" />
+  </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/Board.java</url>
-          <line>238</line>
-          <properties class="Board" method="children">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="45" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/Board.java</url>
-          <line>253</line>
-          <properties class="Board" method="checkRotation">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="46" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="wining" />
         <PinnedItemInfo parentTag="Board" memberName="board" />
+        <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="simulations" />
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="formulaResult" />
+        <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="layout" />
+        <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="winningResults" />
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="father" />
-        <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="Childrens" />
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="92">
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="98">
         <watch expression="root.Childrens" language="JAVA" />
       </inline-watch>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="202">
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="195">
         <watch expression="father.Childrens" language="JAVA" />
       </inline-watch>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="92">
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="98">
         <watch expression="selectedNode.Childrens" language="JAVA" />
       </inline-watch>
     </watches-manager>
