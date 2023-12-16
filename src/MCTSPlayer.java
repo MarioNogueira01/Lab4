@@ -7,17 +7,9 @@
 
 import java.util.*;
 
-
-/**
- * Represents a MCTS player.
- */
 public class MCTSPlayer {
-    private static final int SIMULATION_COUNT = 5000000;// Número de simulações por iteração MCTS
+    private static final int SIMULATION_COUNT = 1000000;// Número de simulações por iteração MCTS
 
-    private static final long simulationTime = 1500;//tempo em milisegundos
-    /**
-     * Represents a node from MCTS tree
-     */
     public static class State implements Cloneable {
         private Ilayout layout;
         private State father;
@@ -45,7 +37,7 @@ public class MCTSPlayer {
         public State(Ilayout l, State n) {
             layout = l;
             father = n;
-            visit = 1;
+            visit = 0;
             if (this.father != null){
                 if (this.father.minMax == -1){
                     minMax = 1;
@@ -53,7 +45,7 @@ public class MCTSPlayer {
                     minMax = -1;
                 }
             }else {
-                minMax = -1;
+                minMax = 1;
             }
             move = l.getMove();
         }
@@ -76,6 +68,9 @@ public class MCTSPlayer {
         public double getFormulaResult() {
             return formulaResult;
         }
+        public State getChildWithMaxScore() {
+            return this.Childrens.poll();
+        }
 
         public int getMove() {
             return this.move;
@@ -84,25 +79,22 @@ public class MCTSPlayer {
 
     static int play(Ilayout board) {
         // Crie um nó raiz com o estado atual do tabuleiro
-
         State rootNode = new State(board,null);
 
-        State bestChild = monteCarloTreeSearch(rootNode);
 
+        State bestChild = monteCarloTreeSearch(rootNode);
         return (bestChild != null) ? bestChild.getMove() : -1;
     }
 
 
     static public State monteCarloTreeSearch(State root) {
-        long startTime = System.currentTimeMillis();
-        while(checkTime(startTime,simulationTime)){
+
+        for (int i = 0; i < SIMULATION_COUNT; i++) {
             State selectedNode = selection(root);
 
             if (!selectedNode.layout.isGameOver()) {
-
                 criationQueue(selectedNode);
                 List<Ilayout> children = selectedNode.layout.children();
-
                 for (Ilayout e : children) {
                     State nn = new State(e, selectedNode);
                     selectedNode.Childrens.add(nn);
@@ -113,16 +105,7 @@ public class MCTSPlayer {
                 }
             }
         }
-        return root.Childrens.poll();
-    }
-
-    private static boolean checkTime(long startTime, long simulationTime) {
-        long endTime = System.currentTimeMillis();
-        long totalTimeMili = endTime - startTime;
-        if (totalTimeMili < simulationTime)
-            return true;
-        else
-            return false;
+        return root.getChildWithMaxScore();
     }
 
     private static void backpropagation(State actual, double simulationResult) {
@@ -134,59 +117,83 @@ public class MCTSPlayer {
 
             actual = father;
         }
-        modify(actual, -2);
     }
 
     //TODO: verificar a criação das priorityQueues
     private static void criationQueue(State selectedNode) {
 
         if (selectedNode.father != null){
-            if(selectedNode.father.minMax == 1){ //se o pai for min cria no children uma priority queue ordenada pelo min
+            if(selectedNode.father.minMax == -1){ //se o pai for max cria no children uma priority queue ordenada pelo min
                 selectedNode.Childrens = new PriorityQueue<>(10,
-                        (s1, s2) -> Double.compare (s2.getFormulaResult(), s1.getFormulaResult())); // MIN
+                        (s1, s2) -> (int) Math.signum(s1.getFormulaResult() - s2.getFormulaResult()));
             }else{ //se o pai for min cria no children uma priority queue ordenada pelo max
                 selectedNode.Childrens = new PriorityQueue<>(10,
-                        (s1, s2) -> Double.compare (s1.getFormulaResult(), s2.getFormulaResult())); // MAX
+                        (s1, s2) -> (int) Math.signum(s2.getFormulaResult() - s1.getFormulaResult()));
             }
-        }else{
-            //TODO: fazer a parte do jogo
-            //if(selectedNode.layout.isEmptyBoard()){
+        }else {
+            if(selectedNode.layout.isEmptyBoard()){
                 selectedNode.Childrens = new PriorityQueue<>(10,
-                        (s1, s2) -> Double.compare (s2.getFormulaResult(), s1.getFormulaResult()));
-            /*}else{ //se o pai for min cria no children uma priority queue ordenada pelo max
+                        (s1, s2) -> (int) Math.signum(s1.getFormulaResult() - s2.getFormulaResult()));
+            }else{
                 selectedNode.Childrens = new PriorityQueue<>(10,
-                        (s1, s2) -> Double.compare (s1.getFormulaResult(), s2.getFormulaResult()));
-            }*/
+                        (s1, s2) -> (int) Math.signum(s2.getFormulaResult() - s1.getFormulaResult()));
+            }
         }
     }
 
     private static void modify(State toModify, double winning) {
         toModify.visit += 1;
         toModify.simulations += 1;
-        toModify.wining += winning;
-
-        if (toModify.father != null && toModify.father.simulations == 0){
-            toModify.father.simulations = 1;
-        }
-
-        if (winning == -2){
-            if (toModify.simulations > toModify.Childrens.size()){
-                toModify.simulations -= 1;
-            }else if(toModify.simulations != toModify.Childrens.size()){
-                toModify.simulations += 1;
-            }
-        }
-
+        toModify.winningResults = adicionarElemento(toModify.winningResults, winning);
+        toModify.wining = calcularMedia(toModify.winningResults);
         toModify.formulaResult = countResult(toModify);
+    }
+
+    private static void printing(double[] array){
+        for(int i = 0; i < array.length ; i++){
+            System.out.print(array[i] + ",");
+        }
+        System.out.print("\n");
+    }
+    private static double[] adicionarElemento(double[] arrayOriginal, double elemento) {
+        double[] result;
+        if (arrayOriginal != null){
+            int tamanhoOriginal = arrayOriginal.length;
+            result = new double[tamanhoOriginal + 1];
+
+            for (int i = 0; i < tamanhoOriginal; i++) {
+                result[i] = arrayOriginal[i];
+            }
+            result[tamanhoOriginal] = elemento;
+        }else{
+            result = new double[1];
+            result[0] = elemento;
+        }
+        return result;
+    }
+
+    private static double calcularMedia(double[] array) {
+        double soma = 0;
+
+        for (double elemento : array) {
+            soma += elemento;
+        }
+
+        if (array.length > 0) {
+            return soma / array.length;
+        } else {
+            return 0.0;
+        }
     }
 
     private static double countResult(State n) {
         double result = 0;
         if (n.visit != 0 && n.father != null) {
-            result = (n.wining / n.simulations) + 1.44 * Math.sqrt(Math.log(n.father.simulations) / n.simulations);
+            result = (n.wining / n.visit) + 1.44 * Math.sqrt(Math.log(n.father.simulations) / n.visit);
         }
         return result;
     }
+
 
     private static void modifyQueue(State father, State newNow) {
         PriorityQueue<State> temp = new PriorityQueue<>(father.Childrens);
@@ -222,6 +229,7 @@ public class MCTSPlayer {
         return result;
     }
 
+    //TODO: verificar esta função
     static State selection(State root){
         State result = root;
         while(result != null && result.Childrens != null && !result.Childrens.isEmpty()){

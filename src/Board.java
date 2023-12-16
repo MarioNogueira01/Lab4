@@ -304,7 +304,9 @@ public class Board implements Ilayout,Cloneable{
 
     public boolean isEmptyBoard(){
          int possibleMoves = N * M;
+        System.out.println(possibleMoves);
          int avaibleMoves = this.movesAvailable.size();
+        System.out.println(avaibleMoves);
          if (avaibleMoves == possibleMoves){
              return true;
          }
