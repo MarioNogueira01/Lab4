@@ -131,6 +131,7 @@ public class MCTSPlayer {
                         (s1, s2) -> (int) Math.signum(s2.getFormulaResult() - s1.getFormulaResult()));
             }
         }else {
+            //TODO: modificar o metodo isEmptyBoard porque nao posso ter isto assim
             if(selectedNode.layout.isEmptyBoard()){
                 selectedNode.Childrens = new PriorityQueue<>(10,
                         (s1, s2) -> (int) Math.signum(s1.getFormulaResult() - s2.getFormulaResult()));

@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ea6e13fe-5e5b-4393-8ec2-9c418c8e3185" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MCTSPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MCTSPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ilayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ilayout.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +38,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "TODO_SCOPE": "All Places",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/mnogu/OneDrive/Ambiente de Trabalho/Uni/3 ano/1 semestre/IA/LAb4",
+    "last_opened_file_path": "C:/Users/user/OneDrive/Ambiente de Trabalho/PB3T",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -63,11 +63,23 @@
       <workItem from="1701889805846" duration="2633000" />
       <workItem from="1701973096515" duration="3577000" />
       <workItem from="1702248945477" duration="6618000" />
+      <workItem from="1702739743840" duration="35000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -97,16 +109,19 @@
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="wining" />
         <PinnedItemInfo parentTag="Board" memberName="board" />
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="formulaResult" />
+        <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="simulations" />
+        <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="layout" />
+        <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="winningResults" />
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="father" />
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="Childrens" />
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="92">
-        <watch expression="root.Childrens" language="JAVA" />
-      </inline-watch>
       <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="202">
         <watch expression="father.Childrens" language="JAVA" />
+      </inline-watch>
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="92">
+        <watch expression="root.Childrens" language="JAVA" />
       </inline-watch>
       <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="92">
         <watch expression="selectedNode.Childrens" language="JAVA" />
