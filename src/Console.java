@@ -43,8 +43,8 @@ public class Console {
         	//position = XAgent.play(board);
         	board.move(position);
         } else {
-            position=getHumanMove();
-        	//position = XAgent.play(board);
+            //position=getHumanMove();
+        	position = XAgent.play(board);
             //position = MCTSPlayer.play(board);
         	board.move(position);
         }
@@ -91,7 +91,7 @@ public class Console {
     
 
     public static void main(String[] args)  {
-    	    final int repetitions=3;
+    	    final int repetitions=1;
     	    long times = 0;
     	    for(int i=0; i<repetitions; i++) {
     	    	Console game = new Console();

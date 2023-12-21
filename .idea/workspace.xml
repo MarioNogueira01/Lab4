@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea6e13fe-5e5b-4393-8ec2-9c418c8e3185" name="Changes" comment="">
+    <list default="true" id="ea6e13fe-5e5b-4393-8ec2-9c418c8e3185" name="Changes" comment="tentativa">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ilayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ilayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ia2023Problem3.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Console.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Console.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MCTSPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MCTSPlayer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +26,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -36,6 +41,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "TODO_SCOPE": "All Places",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/Users/user/OneDrive/Ambiente de Trabalho/PB3T",
@@ -70,6 +76,17 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -96,7 +113,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/Board.java</url>
           <line>253</line>
-          <properties class="Board" method="checkRotation">
+          <properties class="Board">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -108,8 +125,8 @@
       <pinned-members>
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="wining" />
         <PinnedItemInfo parentTag="Board" memberName="board" />
-        <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="formulaResult" />
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="simulations" />
+        <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="formulaResult" />
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="layout" />
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="winningResults" />
         <PinnedItemInfo parentTag="MCTSPlayer$State" memberName="father" />
@@ -117,14 +134,14 @@
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="202">
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="195">
         <watch expression="father.Childrens" language="JAVA" />
       </inline-watch>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="92">
-        <watch expression="root.Childrens" language="JAVA" />
-      </inline-watch>
-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="92">
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="99">
         <watch expression="selectedNode.Childrens" language="JAVA" />
+      </inline-watch>
+      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="99">
+        <watch expression="root.Childrens" language="JAVA" />
       </inline-watch>
     </watches-manager>
   </component>
