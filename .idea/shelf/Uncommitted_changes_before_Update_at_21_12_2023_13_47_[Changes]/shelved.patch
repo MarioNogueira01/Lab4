@@ -1,0 +1,101 @@
+Index: src/MCTSPlayer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/**\r\n * Create bY Mário Nogueira\r\n * Version 1.2.1\r\n * Date 30/11/2023\r\n * Algoritm Monte Carlo Tree Search for M N K\r\n */\r\n\r\nimport java.util.*;\r\n\r\n\r\n/**\r\n * Represents a MCTS player.\r\n */\r\npublic class MCTSPlayer {\r\n    private static final int SIMULATION_COUNT = 5000000;// Número de simulações por iteração MCTS\r\n\r\n    private static final long simulationTime = 1500;//tempo em milisegundos\r\n    /**\r\n     * Represents a node from MCTS tree\r\n     */\r\n    public static class State implements Cloneable {\r\n        private Ilayout layout;\r\n        private State father;\r\n\r\n        private double formulaResult;\r\n\r\n        private double wining;\r\n\r\n        private double[] winningResults;\r\n        private int visit;\r\n        private int simulations;\r\n\r\n\r\n        protected PriorityQueue<State> Childrens = null;\r\n\r\n        int minMax;\r\n\r\n        int move;\r\n\r\n        /**\r\n         * Constructor for State class\r\n         * l nó que estou\r\n         * n nó pai\r\n         */\r\n        public State(Ilayout l, State n) {\r\n            layout = l;\r\n            father = n;\r\n            visit = 1;\r\n            if (this.father != null){\r\n                if (this.father.minMax == -1){\r\n                    minMax = 1;\r\n                }else{\r\n                    minMax = -1;\r\n                }\r\n            }else {\r\n                minMax = -1;\r\n            }\r\n            move = l.getMove();\r\n        }\r\n\r\n        /**\r\n         * Returns a string representation of the state.\r\n         */\r\n        public String toString() {\r\n            return layout.toString();\r\n        }\r\n\r\n\r\n        /**\r\n         * Calculates the hash code for the state.\r\n         */\r\n        public int hashCode() {\r\n            return toString().hashCode();\r\n        }\r\n\r\n        public double getFormulaResult() {\r\n            return formulaResult;\r\n        }\r\n\r\n        public int getMove() {\r\n            return this.move;\r\n        }\r\n    }\r\n\r\n    static int play(Ilayout board) {\r\n        // Crie um nó raiz com o estado atual do tabuleiro\r\n\r\n        State rootNode = new State(board,null);\r\n\r\n        State bestChild = monteCarloTreeSearch(rootNode);\r\n\r\n        return (bestChild != null) ? bestChild.getMove() : -1;\r\n    }\r\n\r\n\r\n    static public State monteCarloTreeSearch(State root) {\r\n        long startTime = System.currentTimeMillis();\r\n        while(checkTime(startTime,simulationTime)){\r\n            State selectedNode = selection(root);\r\n\r\n            if (!selectedNode.layout.isGameOver()) {\r\n\r\n                criationQueue(selectedNode);\r\n                List<Ilayout> children = selectedNode.layout.children();\r\n\r\n                for (Ilayout e : children) {\r\n                    State nn = new State(e, selectedNode);\r\n                    selectedNode.Childrens.add(nn);\r\n\r\n                    double simulationResult = simulation(nn);\r\n\r\n                    backpropagation(nn, simulationResult);\r\n                }\r\n            }\r\n        }\r\n        return root.Childrens.poll();\r\n    }\r\n\r\n    private static boolean checkTime(long startTime, long simulationTime) {\r\n        long endTime = System.currentTimeMillis();\r\n        long totalTimeMili = endTime - startTime;\r\n        if (totalTimeMili < simulationTime)\r\n            return true;\r\n        else\r\n            return false;\r\n    }\r\n\r\n    private static void backpropagation(State actual, double simulationResult) {\r\n        while(actual.father != null){\r\n            State father = actual.father;\r\n\r\n            modify(actual,simulationResult);\r\n            modifyQueue(father,actual);\r\n\r\n            actual = father;\r\n        }\r\n        modify(actual, -2);\r\n    }\r\n\r\n    //TODO: verificar a criação das priorityQueues\r\n    private static void criationQueue(State selectedNode) {\r\n\r\n        if (selectedNode.father != null){\r\n            if(selectedNode.father.minMax == 1){ //se o pai for min cria no children uma priority queue ordenada pelo min\r\n                selectedNode.Childrens = new PriorityQueue<>(10,\r\n                        (s1, s2) -> Double.compare (s2.getFormulaResult(), s1.getFormulaResult())); // MIN\r\n            }else{ //se o pai for min cria no children uma priority queue ordenada pelo max\r\n                selectedNode.Childrens = new PriorityQueue<>(10,\r\n                        (s1, s2) -> Double.compare (s1.getFormulaResult(), s2.getFormulaResult())); // MAX\r\n            }\r\n        }else{\r\n            //TODO: fazer a parte do jogo\r\n            //if(selectedNode.layout.isEmptyBoard()){\r\n                selectedNode.Childrens = new PriorityQueue<>(10,\r\n                        (s1, s2) -> Double.compare (s2.getFormulaResult(), s1.getFormulaResult()));\r\n            /*}else{ //se o pai for min cria no children uma priority queue ordenada pelo max\r\n                selectedNode.Childrens = new PriorityQueue<>(10,\r\n                        (s1, s2) -> Double.compare (s1.getFormulaResult(), s2.getFormulaResult()));\r\n            }*/\r\n        }\r\n    }\r\n\r\n    private static void modify(State toModify, double winning) {\r\n        toModify.visit += 1;\r\n        toModify.simulations += 1;\r\n        toModify.wining += winning;\r\n\r\n        if (toModify.father != null && toModify.father.simulations == 0){\r\n            toModify.father.simulations = 1;\r\n        }\r\n\r\n        if (winning == -2){\r\n            if (toModify.simulations > toModify.Childrens.size()){\r\n                toModify.simulations -= 1;\r\n            }else if(toModify.simulations != toModify.Childrens.size()){\r\n                toModify.simulations += 1;\r\n            }\r\n        }\r\n\r\n        toModify.formulaResult = countResult(toModify);\r\n    }\r\n\r\n    private static double countResult(State n) {\r\n        double result = 0;\r\n        if (n.visit != 0 && n.father != null) {\r\n            result = (n.wining / n.simulations) + 1.44 * Math.sqrt(Math.log(n.father.simulations) / n.simulations);\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private static void modifyQueue(State father, State newNow) {\r\n        PriorityQueue<State> temp = new PriorityQueue<>(father.Childrens);\r\n        for (int i = 0; i < temp.size();i++){\r\n            State tent = temp.poll();\r\n            if (tent.layout.equals(newNow.layout)){\r\n                father.Childrens.remove(tent);\r\n                father.Childrens.add(newNow);\r\n                break;\r\n            }\r\n        }\r\n         // Remover o elemento atual\r\n         // Adicionar o novo valor à fila\r\n    }\r\n\r\n    private static double simulation(State e) {\r\n        Board simulation =(Board) e.layout.clone();\r\n        int position;\r\n        double result;\r\n        while (!simulation.isGameOver()){\r\n            position = XAgent.play(simulation);\r\n            simulation.move(position);\r\n        }\r\n        Ilayout.ID winner = simulation.getWinner();\r\n        if (winner == Ilayout.ID.X){\r\n            result = 1;\r\n        } else if (winner == Ilayout.ID.Blank) {\r\n            result = 0.5;\r\n        }else {\r\n            result = -1;\r\n        }\r\n\r\n        return result;\r\n    }\r\n\r\n    static State selection(State root){\r\n        State result = root;\r\n        while(result != null && result.Childrens != null && !result.Childrens.isEmpty()){\r\n            result = result.Childrens.poll();\r\n            result.father.Childrens.add(result);\r\n        }\r\n        return result;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/MCTSPlayer.java b/src/MCTSPlayer.java
+--- a/src/MCTSPlayer.java	(revision 3c9aef1f33ea709bfb598fbed5c22947b35de12d)
++++ b/src/MCTSPlayer.java	(date 1703166445820)
+@@ -12,7 +12,6 @@
+  * Represents a MCTS player.
+  */
+ public class MCTSPlayer {
+-    private static final int SIMULATION_COUNT = 5000000;// Número de simulações por iteração MCTS
+ 
+     private static final long simulationTime = 1500;//tempo em milisegundos
+     /**
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"ea6e13fe-5e5b-4393-8ec2-9c418c8e3185\" name=\"Changes\" comment=\"tentativa\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/misc.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Board.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Board.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Console.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Console.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/MCTSPlayer.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/MCTSPlayer.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"UPDATE_TYPE\" value=\"REBASE\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2YaNizkGdOHh7Lt21Bj0CntFSBH\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/mnogu/OneDrive/Ambiente de Trabalho/Uni/3 ano/1 semestre/IA/LAb4&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"ea6e13fe-5e5b-4393-8ec2-9c418c8e3185\" name=\"Changes\" comment=\"\" />\r\n      <created>1700759865105</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1700759865105</updated>\r\n      <workItem from=\"1700759866576\" duration=\"1000\" />\r\n      <workItem from=\"1700760174863\" duration=\"2780000\" />\r\n      <workItem from=\"1700837208237\" duration=\"2999000\" />\r\n      <workItem from=\"1701295633471\" duration=\"10985000\" />\r\n      <workItem from=\"1701345324637\" duration=\"13122000\" />\r\n      <workItem from=\"1701364881269\" duration=\"556000\" />\r\n      <workItem from=\"1701889805846\" duration=\"2633000\" />\r\n      <workItem from=\"1701973096515\" duration=\"3577000\" />\r\n      <workItem from=\"1702248945477\" duration=\"31083000\" />\r\n      <workItem from=\"1702479502530\" duration=\"2102000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"tentativa\">\r\n      <created>1702255649486</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1702255649486</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"tentativa\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"tentativa\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <pin-to-top-manager>\r\n      <pinned-members>\r\n        <PinnedItemInfo parentTag=\"MCTSPlayer$State\" memberName=\"wining\" />\r\n        <PinnedItemInfo parentTag=\"Board\" memberName=\"board\" />\r\n        <PinnedItemInfo parentTag=\"MCTSPlayer$State\" memberName=\"simulations\" />\r\n        <PinnedItemInfo parentTag=\"MCTSPlayer$State\" memberName=\"formulaResult\" />\r\n        <PinnedItemInfo parentTag=\"MCTSPlayer$State\" memberName=\"layout\" />\r\n        <PinnedItemInfo parentTag=\"MCTSPlayer$State\" memberName=\"winningResults\" />\r\n        <PinnedItemInfo parentTag=\"MCTSPlayer$State\" memberName=\"father\" />\r\n      </pinned-members>\r\n    </pin-to-top-manager>\r\n    <watches-manager>\r\n      <inline-watch fileUrl=\"file://$PROJECT_DIR$/src/MCTSPlayer.java\" line=\"98\">\r\n        <watch expression=\"root.Childrens\" language=\"JAVA\" />\r\n      </inline-watch>\r\n      <inline-watch fileUrl=\"file://$PROJECT_DIR$/src/MCTSPlayer.java\" line=\"195\">\r\n        <watch expression=\"father.Childrens\" language=\"JAVA\" />\r\n      </inline-watch>\r\n      <inline-watch fileUrl=\"file://$PROJECT_DIR$/src/MCTSPlayer.java\" line=\"98\">\r\n        <watch expression=\"selectedNode.Childrens\" language=\"JAVA\" />\r\n      </inline-watch>\r\n    </watches-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 3c9aef1f33ea709bfb598fbed5c22947b35de12d)
++++ b/.idea/workspace.xml	(date 1703002490035)
+@@ -5,11 +5,7 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="ea6e13fe-5e5b-4393-8ec2-9c418c8e3185" name="Changes" comment="tentativa">
+-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Console.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Console.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/MCTSPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MCTSPlayer.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -36,20 +32,20 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
+-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;C:/Users/mnogu/OneDrive/Ambiente de Trabalho/Uni/3 ano/1 semestre/IA/LAb4&quot;,
+-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "RunOnceActivity.OpenProjectViewOnStart": "true",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "TODO_SCOPE": "All Places",
++    "WebServerToolWindowFactoryState": "false",
++    "last_opened_file_path": "C:/Users/mnogu/OneDrive/Ambiente de Trabalho/Uni/3 ano/1 semestre/IA/Lab3_IDA",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "vue.rearranger.settings.migration": "true"
+   }
+-}</component>
++}]]></component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+@@ -68,6 +64,8 @@
+       <workItem from="1701973096515" duration="3577000" />
+       <workItem from="1702248945477" duration="31083000" />
+       <workItem from="1702479502530" duration="2102000" />
++      <workItem from="1702735764842" duration="141000" />
++      <workItem from="1703002456453" duration="33000" />
+     </task>
+     <task id="LOCAL-00001" summary="tentativa">
+       <created>1702255649486</created>
+@@ -99,14 +97,14 @@
+       </pinned-members>
+     </pin-to-top-manager>
+     <watches-manager>
+-      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="98">
+-        <watch expression="root.Childrens" language="JAVA" />
+-      </inline-watch>
+       <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="195">
+         <watch expression="father.Childrens" language="JAVA" />
+       </inline-watch>
+       <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="98">
+         <watch expression="selectedNode.Childrens" language="JAVA" />
++      </inline-watch>
++      <inline-watch fileUrl="file://$PROJECT_DIR$/src/MCTSPlayer.java" line="98">
++        <watch expression="root.Childrens" language="JAVA" />
+       </inline-watch>
+     </watches-manager>
+   </component>
